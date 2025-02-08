@@ -22,6 +22,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,7 +46,11 @@ import com.example.cronoapp.viewModels.CronosViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddView(navController: NavController, cronometroVM: CronometroViewModel, cronosVM: CronosViewModel) {
+fun AddView(
+    navController: NavController,
+    cronometroVM: CronometroViewModel,
+    cronosVM: CronosViewModel
+) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -123,30 +131,48 @@ fun ContentAddView(
             }
         }
 
-        if (state.showTextField){
+        if (state.showTextField) {
+            var isError by remember { mutableStateOf(false) }
             MainTextField(
                 value = state.title,
-                onValueChange = { cronometroVM.onValue(it)},
+                onValueChange = {
+                    cronometroVM.onValue(it)
+                    isError = it.isBlank()
+                },
                 label = "Title"
             )
+            if (isError) {
+                Text(
+                    text = "El título no puede estar vacío",
+                    color = Color.Red,
+                    fontSize = 12.sp,
+                    modifier = Modifier.padding(start = 8.dp, top = 4.dp)
+                )
+            }
 
             Button(
-                onClick ={
-                    cronosVM.addCrono(
-                        Cronos(
-                            title = state.title,
-                            crono = cronometroVM.time
+                onClick = {
+                    if (state.title.isBlank()) { // Validar antes de ejecutar la acción
+                        isError = true
+                    } else {
+                        cronosVM.addCrono(
+                            Cronos(
+                                title = state.title,
+                                crono = cronometroVM.time
+                            )
                         )
-                    )
-                    cronometroVM.stop()
-                    cronometroVM.onValue("")
-                    navController.popBackStack()
+                        cronometroVM.stop()
+                        cronometroVM.onValue("")
+                        isError = false
+                        navController.popBackStack()
+                    }
+
                 }
             ) {
                 Text(
                     text = "Guardar",
                     color = Color.White
-                    )
+                )
             }
         }
     }
