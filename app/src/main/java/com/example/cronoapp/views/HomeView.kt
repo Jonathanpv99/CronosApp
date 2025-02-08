@@ -16,8 +16,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.example.cronoapp.components.CronoCard
 import com.example.cronoapp.components.FloatButton
 import com.example.cronoapp.components.MainTitle
+import com.example.cronoapp.components.formatTime
 import com.example.cronoapp.viewModels.CronosViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,7 +57,13 @@ fun ContentHomeView(
 
         LazyColumn {
             items(cronosList){ item ->
-                Text(text = item.title)
+                CronoCard(
+                    title = item.title,
+                    crono = formatTime(item.crono),
+
+                ) {
+
+                }
             }
         }
     }
