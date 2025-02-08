@@ -51,7 +51,7 @@ dependencies {
 
     //  Dagger Hilt
     implementation("com.google.dagger:hilt-android:2.51.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.51.1") //aqui no use ksp por la version de dagger para que tubiera la misma
     // Para soporte de coroutines
     implementation("androidx.room:room-ktx:$room_version")
 
