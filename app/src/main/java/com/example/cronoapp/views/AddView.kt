@@ -21,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -161,9 +162,6 @@ fun ContentAddView(
                                 crono = cronometroVM.time
                             )
                         )
-                        cronometroVM.stop()
-                        cronometroVM.onValue("")
-                        isError = false
                         navController.popBackStack()
                     }
 
@@ -173,6 +171,13 @@ fun ContentAddView(
                     text = "Guardar",
                     color = Color.White
                 )
+            }
+            DisposableEffect(Unit) {
+                onDispose {
+                    cronometroVM.stop()
+                    cronometroVM.onValue("")
+                    isError = false
+                }
             }
         }
     }

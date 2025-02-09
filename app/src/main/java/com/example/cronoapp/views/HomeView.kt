@@ -38,7 +38,10 @@ import me.saket.swipe.SwipeableActionsBox
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeView( navController: NavController, cronosVM: CronosViewModel){
+fun HomeView(
+    navController: NavController,
+    cronosVM: CronosViewModel
+){
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -103,7 +106,7 @@ fun ContentHomeView(
                         crono = formatTime(item.crono),
 
                         ) {
-                        navController.navigate("EditView")
+                        navController.navigate("EditView/${item.id}")
                     }
                 }
             }
